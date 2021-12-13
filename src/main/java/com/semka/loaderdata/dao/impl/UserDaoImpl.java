@@ -1,6 +1,6 @@
 package com.semka.loaderdata.dao.impl;
 
-import com.semka.loaderdata.dao.AdminDao;
+import com.semka.loaderdata.dao.UserDao;
 import com.semka.loaderdata.dao.entity.RoleEntity;
 import com.semka.loaderdata.dao.entity.UserEntity;
 import org.springframework.stereotype.Repository;
@@ -10,11 +10,11 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 @Repository
-public class AdminDaoImpl implements AdminDao {
+public class UserDaoImpl implements UserDao {
 
     private final EntityManager entityManager;
 
-    public AdminDaoImpl(EntityManager entityManager) {
+    public UserDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

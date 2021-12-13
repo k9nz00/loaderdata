@@ -1,6 +1,6 @@
 package com.semka.loaderdata.security;
 
-import com.semka.loaderdata.dao.AdminDao;
+import com.semka.loaderdata.dao.UserDao;
 import com.semka.loaderdata.dao.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,11 +19,11 @@ import java.util.Optional;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final AdminDao adminDao;
+    private final UserDao userDao;
 
     @Autowired
-    public CustomAuthenticationProvider(AdminDao adminDao) {
-        this.adminDao = adminDao;
+    public CustomAuthenticationProvider(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     private Optional<Collection<String>> getUserRoles(String username, String password) {
-        UserEntity userEntity = adminDao.getUserByLoginAndPassword(username, password);
+        UserEntity userEntity = userDao.getUserByLoginAndPassword(username, password);
         return Optional.ofNullable(userEntity)
-                .map(user -> Arrays.asList(adminDao.getRole(user.getRoleId()).getAuthorities()));
+                .map(user -> Arrays.asList(userDao.getRole(user.getRoleId()).getAuthorities()));
     }
 }

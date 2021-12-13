@@ -4,7 +4,7 @@ import com.semka.loaderdata.dao.entity.RoleEntity;
 import com.semka.loaderdata.dao.entity.UserEntity;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface AdminDao {
+public interface UserDao {
 
 
     RoleEntity getRole(int roleId);
