@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
                     return currentUserDto;
                 })
                 .orElseThrow(() -> {
-                    throw new IllegalArgumentException("Пользователь с такими данными не найден");
+                    throw new IllegalArgumentException("Неправильный логин или пароль");
                 });
     }
 }
