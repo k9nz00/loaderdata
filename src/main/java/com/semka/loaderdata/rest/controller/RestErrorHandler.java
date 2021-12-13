@@ -16,4 +16,10 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
     public ErrorMessage handleError(final AccessDeniedException e) {
         return new ErrorMessage(e.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorMessage handleError(final IllegalArgumentException e) {
+        return new ErrorMessage(e.getMessage());
+    }
 }

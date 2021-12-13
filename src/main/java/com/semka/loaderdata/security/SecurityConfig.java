@@ -2,7 +2,6 @@ package com.semka.loaderdata.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,9 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private final CustomAuthenticationProvider authenticationProvider;
-
 
     @Autowired
     public SecurityConfig(CustomAuthenticationProvider authenticationProvider) {
@@ -35,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .httpBasic()
+                .authorizeRequests()
+                .antMatchers("/api/users/login").permitAll()
+                .antMatchers("/**").authenticated().and().httpBasic()
                 .and()
                 .logout()
                 .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
