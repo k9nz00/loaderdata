@@ -9,6 +9,8 @@ public interface UserDao {
 
     RoleEntity getRole(int roleId);
 
+    boolean userExists(String username);
+
     @Transactional
     UserEntity createUser(int roleId, String username, String password);
 
