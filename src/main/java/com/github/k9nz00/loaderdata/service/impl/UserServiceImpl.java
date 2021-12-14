@@ -24,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CurrentUserDto getUser(UserRequestDto requestDto) {
+        if (!userDao.userExists(requestDto.getUsername())) {
+            throw new IllegalArgumentException(String.format("Пользователь с логином '%s'  не существует", requestDto.getUsername()));
+        }
         UserEntity user = this.userDao.getUserByLoginAndPassword(requestDto.getUsername(), requestDto.getPassword());
         return Optional.ofNullable(user)
                 .map(userEntity -> {

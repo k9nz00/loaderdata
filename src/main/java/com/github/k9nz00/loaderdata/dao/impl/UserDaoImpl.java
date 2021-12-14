@@ -1,13 +1,14 @@
 package com.github.k9nz00.loaderdata.dao.impl;
 
-import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
+import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -21,6 +22,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public RoleEntity getRole(int roleId) {
         return entityManager.find(RoleEntity.class, roleId);
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        Query nativeQuery = entityManager.createNativeQuery("SELECT exists(SELECT * FROM loader.users WHERE name = :name)");
+        nativeQuery.setParameter("name", username);
+        return (boolean) nativeQuery.getSingleResult();
     }
 
     @Override
