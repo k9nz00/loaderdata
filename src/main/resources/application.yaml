@@ -23,3 +23,7 @@ spring:
     user: ${DB_USER:postgres}
     password: ${DB_PASS:123}
     changeLog: classpath:/db/changelog/db.changelog-master.yaml
+
+config:
+  pagination:
+    default-limit: 15

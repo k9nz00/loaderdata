@@ -1,14 +1,14 @@
 package com.github.k9nz00.loaderdata.rest.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CurrentUserDto {
-
-    private int userId;
-    private int roleId;
-    private String username;
+@NoArgsConstructor
+public class CurrentUserDto extends UserDto {
     private List<String> authorities;
 }

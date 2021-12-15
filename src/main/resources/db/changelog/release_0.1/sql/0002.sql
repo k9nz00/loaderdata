@@ -23,3 +23,6 @@ CREATE TABLE if not exists  loader.users
 
 -- вставка дефолтного пользователя - owner
 INSERT INTO loader.users (id, role_id, name, password) VALUES (1, 1, 'owner', crypt('1234', gen_salt('bf', 8)));
+INSERT INTO loader.users (id, role_id, name, password) VALUES (2, 2, 'admin', crypt('admin', gen_salt('bf', 8)));
+INSERT INTO loader.users (id, role_id, name, password) VALUES (3, 3, 'advanced_user', crypt('advanced_user', gen_salt('bf', 8)));
+INSERT INTO loader.users (id, role_id, name, password) VALUES (4, 4, 'default_user', crypt('default_user', gen_salt('bf', 8)));

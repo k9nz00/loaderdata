@@ -3,25 +3,35 @@ package com.github.k9nz00.loaderdata.dao.impl;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
+import com.github.k9nz00.loaderdata.rest.dto.TableCriteriaDto;
+import com.github.k9nz00.loaderdata.util.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import java.util.Optional;
+import java.util.Collection;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
-    private final EntityManager entityManager;
-
-    public UserDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    @Autowired
+    public UserDaoImpl(
+            final EntityManager entityManager,
+            final @Value("${config.pagination.default-limit}") int defaultLimit) {
+        super(entityManager, defaultLimit);
     }
 
     @Override
     public RoleEntity getRole(int roleId) {
         return entityManager.find(RoleEntity.class, roleId);
+    }
+
+    @Override
+    public Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto) {
+        return execute(Transformers.criteriaDto(UserEntity.class, null, tableCriteriaDto));
     }
 
     @Override
@@ -33,9 +43,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserEntity createUser(int roleId, String username, String password) {
-        Query query = entityManager.createNativeQuery("INSERT INTO loader.users (role_id, name, password) " +
-                "values (:role_id, :name, public.crypt(:password, public.gen_salt('bf', 8)))" +
-                "returning id, name, password", UserEntity.class);
+        Query query = entityManager.createNativeQuery(
+                "INSERT INTO loader.users (role_id, name, password) " +
+                        "values (:role_id, :name, public.crypt(:password, public.gen_salt('bf', 8)))" +
+                        "returning id, role_id, name, password", UserEntity.class);
         query.setParameter("role_id", roleId);
         query.setParameter("name", username);
         query.setParameter("password", password);
