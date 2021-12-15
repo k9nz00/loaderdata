@@ -1,21 +1,33 @@
 package com.github.k9nz00.loaderdata.dao.impl;
 
-import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
+import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
+import com.github.k9nz00.loaderdata.rest.dto.TableCriteriaDto;
+import com.github.k9nz00.loaderdata.rest.dto.UserUpdateDto;
+import com.github.k9nz00.loaderdata.util.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.Collection;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
-    private final EntityManager entityManager;
+    private final PasswordEncoder encoder;
 
-    public UserDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    @Autowired
+    public UserDaoImpl(
+            final EntityManager entityManager,
+            final @Value("${config.pagination.default-limit}") int defaultLimit,
+            final PasswordEncoder passwordEncoder) {
+        super(entityManager, defaultLimit);
+        this.encoder = passwordEncoder;
     }
 
     @Override
@@ -24,10 +36,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto) {
+        return execute(Transformers.criteriaDto(UserEntity.class, null, tableCriteriaDto));
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        Query nativeQuery = entityManager.createNativeQuery("SELECT exists(SELECT * FROM loader.users WHERE name = :name)");
+        nativeQuery.setParameter("name", username);
+        return (boolean) nativeQuery.getSingleResult();
+    }
+
+    @Override
     public UserEntity createUser(int roleId, String username, String password) {
-        Query query = entityManager.createNativeQuery("INSERT INTO loader.users (role_id, name, password) " +
-                "values (:role_id, :name, public.crypt(:password, public.gen_salt('bf', 8)))" +
-                "returning id, name, password", UserEntity.class);
+        Query query = entityManager.createNativeQuery(
+                "INSERT INTO loader.users (role_id, name, password) " +
+                        "values (:role_id, :name, public.crypt(:password, public.gen_salt('bf', 8)))" +
+                        "returning id, role_id, name, password", UserEntity.class);
         query.setParameter("role_id", roleId);
         query.setParameter("name", username);
         query.setParameter("password", password);
@@ -35,8 +60,28 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public UserEntity updateUser(int userId, UserUpdateDto updateDto) {
+        UserEntity userEntity = entityManager.find(UserEntity.class, userId);
 
+        userEntity.setRoleId(updateDto.getRoleId());
+        userEntity.setName(updateDto.getUsername());
+
+        if (updateDto.getPassword() != null) {
+            String newPassword = encoder.encode(updateDto.getPassword());
+            userEntity.setPassword(newPassword);
+        }
+
+        entityManager.persist(userEntity);
+        return userEntity;
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        UserEntity userEntity = entityManager.find(UserEntity.class, userId);
+        if (userEntity == null) {
+            throw new IllegalArgumentException(String.format("пользователь с id = %d не найден", userId));
+        }
+        entityManager.remove(userEntity);
     }
 
     @Override
