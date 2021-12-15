@@ -55,7 +55,11 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public void deleteUser(int userId) {
-
+        UserEntity userEntity = entityManager.find(UserEntity.class, userId);
+        if (userEntity == null){
+            throw new IllegalArgumentException(String.format("пользователь с id = %d не найден", userId));
+        }
+        entityManager.remove(userEntity);
     }
 
     @Override

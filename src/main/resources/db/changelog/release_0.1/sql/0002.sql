@@ -21,7 +21,7 @@ CREATE TABLE if not exists  loader.users
     password varchar
 );
 
--- вставка дефолтного пользователя - owner
+-- вставка дефолтных пользователей
 INSERT INTO loader.users (id, role_id, name, password) VALUES (1, 1, 'owner', crypt('1234', gen_salt('bf', 8)));
 INSERT INTO loader.users (id, role_id, name, password) VALUES (2, 2, 'admin', crypt('admin', gen_salt('bf', 8)));
 INSERT INTO loader.users (id, role_id, name, password) VALUES (3, 3, 'advanced_user', crypt('advanced_user', gen_salt('bf', 8)));
