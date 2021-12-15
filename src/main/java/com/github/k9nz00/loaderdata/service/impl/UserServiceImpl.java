@@ -3,10 +3,7 @@ package com.github.k9nz00.loaderdata.service.impl;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
-import com.github.k9nz00.loaderdata.rest.dto.CurrentUserDto;
-import com.github.k9nz00.loaderdata.rest.dto.UserCreateDto;
-import com.github.k9nz00.loaderdata.rest.dto.UserCriteriaDto;
-import com.github.k9nz00.loaderdata.rest.dto.UserRequestDto;
+import com.github.k9nz00.loaderdata.rest.dto.*;
 import com.github.k9nz00.loaderdata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +50,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> {
                     throw new IllegalArgumentException("Неправильный логин или пароль");
                 });
+    }
+
+    @Override
+    public <T> T updateUser(int userId, UserUpdateDto dto, Function<UserEntity, T> transformer) {
+        UserEntity userEntity = userDao.updateUser(userId, dto);
+        return transformer.apply(userEntity);
     }
 
     @Override
