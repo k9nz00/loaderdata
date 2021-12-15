@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Collections;
 
 import static com.github.k9nz00.loaderdata.security.Authorities.MANAGE_USERS;
 
@@ -40,5 +39,11 @@ public class UserController {
     @PostMapping
     public UserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDto userDto) {
         return userService.createUser(userDto, UITransformers::userDto);
+    }
+
+    @Secured(MANAGE_USERS)
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userService.deleteById(id);
     }
 }
