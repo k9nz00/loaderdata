@@ -40,7 +40,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                         .map(String::toUpperCase)
                         .toArray(String[]::new))
                 .build();
-        return new UsernamePasswordAuthenticationToken(userDetails.getPassword(), userDetails.getPassword(), userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     @Override

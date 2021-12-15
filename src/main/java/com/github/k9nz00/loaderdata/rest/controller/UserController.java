@@ -6,6 +6,7 @@ import com.github.k9nz00.loaderdata.util.UITransformers;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,11 @@ public class UserController {
     @PostMapping("/login")
     public CurrentUserDto login(@ParameterObject @RequestBody UserRequestDto requestDto) {
         return userService.getUserByLogin(requestDto);
+    }
+
+    @GetMapping("/currentUser")
+    public UserInfoDto getCurrentUserInfo(Authentication authentication) {
+        return UITransformers.userDto(authentication);
     }
 
     @Secured(MANAGE_USERS)
