@@ -3,6 +3,7 @@ package com.github.k9nz00.loaderdata.dao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.rest.dto.TableCriteriaDto;
+import com.github.k9nz00.loaderdata.rest.dto.UserUpdateDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -19,7 +20,8 @@ public interface UserDao {
     @Transactional
     UserEntity createUser(int roleId, String username, String password);
 
-    //update
+    @Transactional
+    UserEntity updateUser(int userId, UserUpdateDto updateDto);
 
     //блокировка пользователя
 

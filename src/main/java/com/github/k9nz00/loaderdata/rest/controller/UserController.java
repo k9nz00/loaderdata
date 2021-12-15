@@ -42,6 +42,13 @@ public class UserController {
     }
 
     @Secured(MANAGE_USERS)
+    @PutMapping("/user/{id}")
+    public UserDto updateUser(@PathVariable int id,
+                              @Valid @ParameterObject @RequestBody UserUpdateDto updateDto) {
+        return userService.updateUser(id, updateDto, UITransformers::userDto);
+    }
+
+    @Secured(MANAGE_USERS)
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteById(id);
