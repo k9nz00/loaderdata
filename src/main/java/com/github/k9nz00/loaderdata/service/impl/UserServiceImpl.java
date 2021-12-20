@@ -42,6 +42,15 @@ public class UserServiceImpl implements UserService {
                     currentUserDto.setUserId(user.getId());
                     currentUserDto.setRoleId(user.getRoleId());
                     currentUserDto.setUsername(user.getName());
+                    currentUserDto.setCreatedAt(user.getCreatedAt());
+
+                    if (user.getUpdatedAt() != null){
+                        currentUserDto.setUpdatedAt(user.getUpdatedAt());
+                    }
+
+                    if (user.getDeletedAt() != null){
+                        currentUserDto.setDeletedAt(user.getDeletedAt());
+                    }
 
                     RoleEntity role = userDao.getRole(user.getRoleId());
                     currentUserDto.setAuthorities(Arrays.asList(role.getAuthorities()));

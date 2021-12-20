@@ -18,11 +18,15 @@ CREATE TABLE if not exists  loader.users
     id serial CONSTRAINT users_pk PRIMARY KEY,
     role_id int REFERENCES loader.roles(id) NOT NULL,
     name varchar(50),
-    password varchar
+    password varchar,
+    is_active boolean DEFAULT TRUE NOT NULL,
+    created_at timestamp NOT NULL,
+    updated_at timestamp,
+    deleted_at timestamp
 );
 
 -- вставка дефолтных пользователей
-INSERT INTO loader.users (id, role_id, name, password) VALUES (1, 1, 'owner', crypt('1234', gen_salt('bf', 8)));
-INSERT INTO loader.users (id, role_id, name, password) VALUES (2, 2, 'admin', crypt('admin', gen_salt('bf', 8)));
-INSERT INTO loader.users (id, role_id, name, password) VALUES (3, 3, 'advanced_user', crypt('advanced_user', gen_salt('bf', 8)));
-INSERT INTO loader.users (id, role_id, name, password) VALUES (4, 4, 'default_user', crypt('default_user', gen_salt('bf', 8)));
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (1, 'owner', crypt('1234', gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (2, 'admin', crypt('admin', gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (3, 'advanced_user', crypt('advanced_user', gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (4, 'default_user', crypt('default_user', gen_salt('bf', 8)), true, now());

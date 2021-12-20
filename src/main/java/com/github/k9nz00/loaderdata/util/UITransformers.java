@@ -16,13 +16,21 @@ import java.util.Set;
 public class UITransformers {
 
     public static UserDto userDto(final UserEntity input) {
-        return new UserDto(input.getId(), input.getRoleId(), input.getName());
+        return new UserDto(
+                input.getId(),
+                input.getRoleId(),
+                input.getName(),
+                input.getIsActive(),
+                input.getCreatedAt(),
+                input.getUpdatedAt(),
+                input.getDeletedAt()
+        );
     }
 
     public static UserInfoDto userDto(final Authentication authentication) {
         if (authentication != null){
-            Collection<String> strings = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-            return new UserInfoDto(authentication.getName(), strings);
+            Collection<String> authorityList = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+            return new UserInfoDto(authentication.getName(), authorityList);
         } else {
             return null;
         }

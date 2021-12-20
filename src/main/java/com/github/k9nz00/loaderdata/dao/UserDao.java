@@ -30,4 +30,6 @@ public interface UserDao {
 
     @Transactional
     UserEntity getUserByLoginAndPassword(String username, String password);
+
+    UserEntity getUserByLogin(String username);
 }
