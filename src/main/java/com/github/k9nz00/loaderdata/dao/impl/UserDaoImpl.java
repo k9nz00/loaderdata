@@ -1,5 +1,6 @@
 package com.github.k9nz00.loaderdata.dao.impl;
 
+import com.github.k9nz00.loaderdata.dao.PredicateProvider;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
@@ -37,8 +38,8 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto) {
-        return execute(Transformers.criteriaDto(UserEntity.class, null, tableCriteriaDto));
+    public Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto, PredicateProvider<UserEntity> predicateProvider) {
+        return execute(Transformers.criteriaDto(UserEntity.class, predicateProvider, tableCriteriaDto));
     }
 
     @Override

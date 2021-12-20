@@ -34,7 +34,6 @@ public abstract class AbstractDaoImpl {
         }
 
         String sortColumn = criteriaDto.getSortColumn();
-
         if (sortColumn != null){
             String[] paths = sortColumn.split("\\.");
             Path<Object> sort = root.get(paths[0]);

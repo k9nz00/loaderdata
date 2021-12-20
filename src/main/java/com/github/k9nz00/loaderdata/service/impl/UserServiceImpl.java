@@ -1,8 +1,10 @@
 package com.github.k9nz00.loaderdata.service.impl;
 
+import com.github.k9nz00.loaderdata.dao.PredicateProvider;
 import com.github.k9nz00.loaderdata.dao.UserDao;
 import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
+import com.github.k9nz00.loaderdata.factory.CriteriaPredicateFactory;
 import com.github.k9nz00.loaderdata.rest.dto.*;
 import com.github.k9nz00.loaderdata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,15 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final CriteriaPredicateFactory<UserCriteriaDto, UserEntity> userCriteriaPredicateFactory;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(
+            UserDao userDao,
+            CriteriaPredicateFactory<UserCriteriaDto, UserEntity> userCriteriaPredicateFactory
+    ) {
         this.userDao = userDao;
+        this.userCriteriaPredicateFactory = userCriteriaPredicateFactory;
     }
 
     @Override
@@ -44,11 +51,11 @@ public class UserServiceImpl implements UserService {
                     currentUserDto.setUsername(user.getName());
                     currentUserDto.setCreatedAt(user.getCreatedAt());
 
-                    if (user.getUpdatedAt() != null){
+                    if (user.getUpdatedAt() != null) {
                         currentUserDto.setUpdatedAt(user.getUpdatedAt());
                     }
 
-                    if (user.getDeletedAt() != null){
+                    if (user.getDeletedAt() != null) {
                         currentUserDto.setDeletedAt(user.getDeletedAt());
                     }
 
@@ -74,7 +81,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public <T> Collection<T> getAllUsers(UserCriteriaDto criteriaDto, Function<UserEntity, T> transformer) {
-        return userDao.getAllUsers(criteriaDto).stream()
+
+        PredicateProvider<UserEntity> entityPredicateProvider = userCriteriaPredicateFactory.create(criteriaDto);
+        return userDao.getAllUsers(criteriaDto, entityPredicateProvider).stream()
                 .map(transformer)
                 .collect(Collectors.toList());
     }
