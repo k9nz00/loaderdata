@@ -1,6 +1,6 @@
 package com.github.k9nz00.loaderdata.dao.impl;
 
-import com.github.k9nz00.loaderdata.dao.type.UserMetaDao;
+import com.github.k9nz00.loaderdata.dao.UserMetaDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

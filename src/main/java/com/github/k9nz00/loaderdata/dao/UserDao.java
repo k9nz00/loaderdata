@@ -10,10 +10,9 @@ import java.util.Collection;
 
 public interface UserDao {
 
-
     RoleEntity getRole(int roleId);
 
-    Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto);
+    Collection<UserEntity> getAllUsers(TableCriteriaDto tableCriteriaDto, PredicateProvider<UserEntity> predicateProvider);
 
     boolean userExists(String username);
 
@@ -30,4 +29,6 @@ public interface UserDao {
 
     @Transactional
     UserEntity getUserByLoginAndPassword(String username, String password);
+
+    UserEntity getUserByLogin(String username);
 }

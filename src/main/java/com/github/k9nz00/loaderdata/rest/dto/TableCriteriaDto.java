@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public abstract class TableCriteriaDto {
-    @Parameter(description = "Result size limit. Maximum 100")
+    @Parameter(description = "Result size limit. Maximum 250")
     @Max(250)
     private Integer limit;
 
