@@ -41,7 +41,6 @@ public class UserController {
         return userService.getAllUsers(userCriteriaDto, UITransformers::userDto);
     }
 
-    @Secured(MANAGE_USERS)
     @PostMapping
     public UserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDto userDto) {
         return userService.createUser(userDto, UITransformers::userDto);
