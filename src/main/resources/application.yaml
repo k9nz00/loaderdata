@@ -27,3 +27,6 @@ spring:
 config:
   pagination:
     default-limit: 15
+
+server:
+  port: 8090
