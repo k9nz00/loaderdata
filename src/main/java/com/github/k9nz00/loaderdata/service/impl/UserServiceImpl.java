@@ -2,34 +2,28 @@ package com.github.k9nz00.loaderdata.service.impl;
 
 import com.github.k9nz00.loaderdata.dao.PredicateProvider;
 import com.github.k9nz00.loaderdata.dao.UserDao;
-import com.github.k9nz00.loaderdata.dao.entity.RoleEntity;
 import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.factory.CriteriaPredicateFactory;
 import com.github.k9nz00.loaderdata.rest.dto.*;
 import com.github.k9nz00.loaderdata.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.k9nz00.loaderdata.transformer.Transformer;
+import com.github.k9nz00.loaderdata.transformer.dto.LoggedUserTransformerDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final CriteriaPredicateFactory<UserCriteriaDto, UserEntity> userCriteriaPredicateFactory;
+    private final Transformer<LoggedUserTransformerDto, CurrentUserDto> loginUserTransformer;
 
-    @Autowired
-    public UserServiceImpl(
-            UserDao userDao,
-            CriteriaPredicateFactory<UserCriteriaDto, UserEntity> userCriteriaPredicateFactory
-    ) {
-        this.userDao = userDao;
-        this.userCriteriaPredicateFactory = userCriteriaPredicateFactory;
-    }
 
     @Override
     public <T> T createUser(UserCreateDto dto, Function<UserEntity, T> transformer) {
@@ -44,25 +38,7 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity user = this.userDao.getUserByLoginAndPassword(requestDto.getUsername(), requestDto.getPassword());
         return Optional.ofNullable(user)
-                .map(userEntity -> {
-                    CurrentUserDto currentUserDto = new CurrentUserDto();
-                    currentUserDto.setUserId(user.getId());
-                    currentUserDto.setRoleId(user.getRoleId());
-                    currentUserDto.setUsername(user.getName());
-                    currentUserDto.setCreatedAt(user.getCreatedAt());
-
-                    if (user.getUpdatedAt() != null) {
-                        currentUserDto.setUpdatedAt(user.getUpdatedAt());
-                    }
-
-                    if (user.getDeletedAt() != null) {
-                        currentUserDto.setDeletedAt(user.getDeletedAt());
-                    }
-
-                    RoleEntity role = userDao.getRole(user.getRoleId());
-                    currentUserDto.setAuthorities(Arrays.asList(role.getAuthorities()));
-                    return currentUserDto;
-                })
+                .map(userEntity -> loginUserTransformer.transform(new LoggedUserTransformerDto(requestDto.getPassword(), userEntity)))
                 .orElseThrow(() -> {
                     throw new IllegalArgumentException("Неправильный логин или пароль");
                 });
