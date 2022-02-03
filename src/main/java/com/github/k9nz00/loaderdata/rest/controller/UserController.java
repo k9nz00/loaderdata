@@ -26,11 +26,6 @@ public class UserController {
         return userService.getUserByLogin(requestDto);
     }
 
-    @GetMapping("/currentUser")
-    public UserInfoDto getCurrentUserInfo(Authentication authentication) {
-        return UITransformers.userDto(authentication);
-    }
-
     @PostMapping("/register")
     public UserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDefaultDto userDto) {
         return userService.createUser(userDto, UITransformers::userDto);

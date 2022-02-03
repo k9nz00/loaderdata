@@ -11,6 +11,5 @@ public interface AdminUserService {
     <T> Collection<T> getAllUsers(UserCriteriaDto criteriaDto, Function<UserEntity, T> transformer);
     <T> T createUser(UserCreateDto dto, Function<UserEntity, T> transformer);
     <T> T updateUser(int userId, UserUpdateDto dto, Function<UserEntity, T> transformer);
-
-    void deleteById(int userId);
+    void deleteUser(int userId);
 }
