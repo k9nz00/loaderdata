@@ -19,6 +19,8 @@ public interface UserDao {
     @Transactional
     UserEntity createUser(int roleId, String username, String password);
 
+    UserEntity createDefaultUser(String username, String password);
+
     @Transactional
     UserEntity updateUser(int userId, UserUpdateDto updateDto);
 
