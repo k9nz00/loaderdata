@@ -7,10 +7,8 @@ CREATE TABLE if not exists loader.roles
 );
 
 -- вставка готовых дефолтных ролей
-INSERT INTO loader.roles (id, name, authorities) VALUES (1, 'Owner', ARRAY['manage_users', 'manage_settings', 'view_some_pages', 'view_all_pages']::loader.authority[]);
-INSERT INTO loader.roles (id, name, authorities) VALUES (2, 'Admin', ARRAY['manage_settings', 'view_some_pages', 'view_all_pages']::loader.authority[]);
-INSERT INTO loader.roles (id, name, authorities) VALUES (3, 'Advanced user', ARRAY['view_some_pages', 'view_all_pages']::loader.authority[]);
-INSERT INTO loader.roles (id, name, authorities) VALUES (4, 'Default user', ARRAY['view_some_pages']::loader.authority[]);
+INSERT INTO loader.roles (id, name, authorities) VALUES (1, 'admin', ARRAY['manage_users', 'manage_settings', 'view_some_pages', 'view_all_pages']::loader.authority[]);
+INSERT INTO loader.roles (id, name, authorities) VALUES (2, 'default_user', ARRAY['view_some_pages']::loader.authority[]);
 
 -- auto-generated definition
 CREATE TABLE if not exists  loader.users
@@ -26,7 +24,5 @@ CREATE TABLE if not exists  loader.users
 );
 
 -- вставка дефолтных пользователей
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (1, 'owner', crypt('1234', gen_salt('bf', 8)), true, now());
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (2, 'admin', crypt('admin', gen_salt('bf', 8)), true, now());
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (3, 'advanced_user', crypt('advanced_user', gen_salt('bf', 8)), true, now());
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (4, 'default_user', crypt('default_user', gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (1, 'admin', crypt('admin', gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (2, 'default_user', crypt('default_user', gen_salt('bf', 8)), true, now());

@@ -54,11 +54,16 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         Query query = entityManager.createNativeQuery(
                 "INSERT INTO loader.users (role_id, name, password, is_active, created_at) " +
                         "values (:role_id, :name, public.crypt(:password, public.gen_salt('bf', 8)), true, now())" +
-                        "returning id, role_id, name, password", UserEntity.class);
+                        "returning id, role_id, name, password, is_active, created_at, updated_at, deleted_at", UserEntity.class);
         query.setParameter("role_id", roleId);
         query.setParameter("name", username);
         query.setParameter("password", password);
         return (UserEntity) query.getSingleResult();
+    }
+
+    @Override
+    public UserEntity createDefaultUser(String username, String password) {
+        return createUser(2, username, password);
     }
 
     @Override
