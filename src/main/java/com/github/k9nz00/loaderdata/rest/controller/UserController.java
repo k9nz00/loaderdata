@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDefaultDto userDto) {
-        return userService.createUser(userDto, UITransformers::userDto);
+    public CurrentUserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDefaultDto userDto) {
+        return userService.createUser(userDto);
     }
 }
