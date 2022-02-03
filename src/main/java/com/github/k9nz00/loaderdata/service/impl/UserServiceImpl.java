@@ -22,9 +22,9 @@ public class UserServiceImpl implements UserService {
     private final Transformer<LoggedUserTransformerDto, CurrentUserDto> loginUserTransformer;
 
     @Override
-    public <T> T createUser(UserCreateDefaultDto dto, Function<UserEntity, T> transformer) {
+    public CurrentUserDto createUser(UserCreateDefaultDto dto) {
         UserEntity user = userDao.createDefaultUser(dto.getUsername(), dto.getPassword());
-        return transformer.apply(user);
+        return loginUserTransformer.transform(new LoggedUserTransformerDto(dto.getPassword(), user));
     }
 
     @Override

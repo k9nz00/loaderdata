@@ -31,9 +31,9 @@ public class AdminUserController {
     }
 
     @Secured(MANAGE_USERS)
-    @PostMapping("/user")
-    public UserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDto userDto) {
-        return userService.createUser(userDto, UITransformers::userDto);
+    @PostMapping("/users")
+    public CurrentUserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDto userDto) {
+        return userService.createUser(userDto);
     }
 
     @Secured(MANAGE_USERS)

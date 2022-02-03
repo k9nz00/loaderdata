@@ -9,5 +9,5 @@ import java.util.function.Function;
 
 public interface UserService {
     CurrentUserDto getUserByLogin(UserRequestDto requestDto);
-    <T> T createUser(UserCreateDefaultDto dto, Function<UserEntity, T> transformer);
+    CurrentUserDto createUser(UserCreateDefaultDto dto);
 }
