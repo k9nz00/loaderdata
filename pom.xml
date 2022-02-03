@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.github.k9nz00</groupId>
 	<artifactId>loaderdata</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>loaderdata</name>
 	<description>Project for learning loaded data in database</description>
 	<properties>
