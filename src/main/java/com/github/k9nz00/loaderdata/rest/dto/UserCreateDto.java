@@ -13,7 +13,7 @@ public class UserCreateDto {
 
     @NotBlank
     @CheckUserExistsValidator
-    private String username;
+    private String name;
 
     @Length(min = 5)
     private String password;
