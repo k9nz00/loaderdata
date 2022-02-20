@@ -12,7 +12,7 @@ public class UserUpdateDto {
 
     @NotBlank
     @CheckUserExistsValidator
-    private String username;
+    private String name;
 
     @Length(min = 5)
     private String password;

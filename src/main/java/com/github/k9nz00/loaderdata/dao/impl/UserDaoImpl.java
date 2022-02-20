@@ -77,7 +77,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         }
 
         userEntity.setRoleId(updateDto.getRoleId());
-        userEntity.setName(updateDto.getUsername());
+        userEntity.setName(updateDto.getName());
         userEntity.setUpdatedAt(LocalDateTime.now());
 
         if (updateDto.getPassword() != null) {

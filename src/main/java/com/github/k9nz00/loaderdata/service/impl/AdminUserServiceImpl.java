@@ -41,7 +41,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public CurrentUserDto createUser(UserCreateDto dto) {
-        UserEntity user = userDao.createUser(dto.getRoleId(), dto.getUsername(), dto.getPassword());
+        UserEntity user = userDao.createUser(dto.getRoleId(), dto.getName(), dto.getPassword());
         return loginUserTransformer.transform(new LoggedUserTransformerDto(dto.getPassword(), user));
     }
 
