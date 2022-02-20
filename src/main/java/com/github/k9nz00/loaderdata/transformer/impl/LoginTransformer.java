@@ -25,9 +25,9 @@ public class LoginTransformer implements Transformer<LoggedUserTransformerDto, C
         UserEntity userEntity = input.getUserEntity();
 
         CurrentUserDto currentUserDto = new CurrentUserDto();
-        currentUserDto.setUserId(userEntity.getId());
+        currentUserDto.setId(userEntity.getId());
         currentUserDto.setRoleId(userEntity.getRoleId());
-        currentUserDto.setUsername(userEntity.getName());
+        currentUserDto.setName(userEntity.getName());
         currentUserDto.setCreatedAt(userEntity.getCreatedAt());
 
         if (userEntity.getUpdatedAt() != null) {
