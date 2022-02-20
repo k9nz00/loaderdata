@@ -1,28 +1,30 @@
 package com.github.k9nz00.loaderdata.rest.controller;
 
+import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.rest.dto.*;
 import com.github.k9nz00.loaderdata.service.AdminUserService;
+import com.github.k9nz00.loaderdata.transformer.Transformer;
 import com.github.k9nz00.loaderdata.util.UITransformers;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.datatransfer.Transferable;
 import java.util.Collection;
 
 import static com.github.k9nz00.loaderdata.security.Authorities.MANAGE_USERS;
 
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminUserController {
 
     private final AdminUserService userService;
-
-    @Autowired
-    public AdminUserController(AdminUserService userService) {
-        this.userService = userService;
-    }
 
     @Secured(MANAGE_USERS)
     @GetMapping("/users")
@@ -37,14 +39,20 @@ public class AdminUserController {
     }
 
     @Secured(MANAGE_USERS)
-    @PutMapping("/user/{id}")
+    @GetMapping("/users/{id}")
+    public UserDto getUser(@PathVariable int id) {
+        return userService.getUser(id);
+    }
+
+    @Secured(MANAGE_USERS)
+    @PutMapping("/users/{id}")
     public UserDto updateUser(@PathVariable int id,
                               @Valid @ParameterObject @RequestBody UserUpdateDto updateDto) {
         return userService.updateUser(id, updateDto, UITransformers::userDto);
     }
 
     @Secured(MANAGE_USERS)
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
     }

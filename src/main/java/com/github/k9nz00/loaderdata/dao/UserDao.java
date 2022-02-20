@@ -19,6 +19,7 @@ public interface UserDao {
     @Transactional
     UserEntity createUser(int roleId, String username, String password);
 
+    @Transactional
     UserEntity createDefaultUser(String username, String password);
 
     @Transactional
@@ -33,4 +34,6 @@ public interface UserDao {
     UserEntity getUserByLoginAndPassword(String username, String password);
 
     UserEntity getUserByLogin(String username);
+
+    UserEntity getUser(int userId);
 }

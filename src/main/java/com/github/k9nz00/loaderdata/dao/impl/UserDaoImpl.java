@@ -7,6 +7,7 @@ import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.rest.dto.TableCriteriaDto;
 import com.github.k9nz00.loaderdata.rest.dto.UserUpdateDto;
 import com.github.k9nz00.loaderdata.util.Transformers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Repository
+@Slf4j
 public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     private final PasswordEncoder encoder;
@@ -123,6 +125,16 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         try {
             return (UserEntity) query.getSingleResult();
         } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public UserEntity getUser(int userId) {
+        try {
+            return entityManager.find(UserEntity.class, userId);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return null;
         }
     }
