@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private int userId;
+    private int id;
     private int roleId;
-    private String username;
+    private String name;
     private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
