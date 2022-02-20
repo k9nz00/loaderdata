@@ -10,6 +10,7 @@ public interface AdminUserService {
     CurrentUserDto getUserByLogin(UserRequestDto requestDto);
     <T> Collection<T> getAllUsers(UserCriteriaDto criteriaDto, Function<UserEntity, T> transformer);
     CurrentUserDto createUser(UserCreateDto dto);
+    UserDto getUser(int userId);
     <T> T updateUser(int userId, UserUpdateDto dto, Function<UserEntity, T> transformer);
     void deleteUser(int userId);
 }

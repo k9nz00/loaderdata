@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final UserDao userDao;
     private final CriteriaPredicateFactory<UserCriteriaDto, UserEntity> userCriteriaPredicateFactory;
     private final Transformer<LoggedUserTransformerDto, CurrentUserDto> loginUserTransformer;
+    private final Transformer<UserEntity, UserDto> userTransformer;
 
     @Override
     public CurrentUserDto getUserByLogin(UserRequestDto requestDto) {
@@ -41,6 +43,15 @@ public class AdminUserServiceImpl implements AdminUserService {
     public CurrentUserDto createUser(UserCreateDto dto) {
         UserEntity user = userDao.createUser(dto.getRoleId(), dto.getUsername(), dto.getPassword());
         return loginUserTransformer.transform(new LoggedUserTransformerDto(dto.getPassword(), user));
+    }
+
+    @Override
+    public UserDto getUser(int userId) {
+        return Optional.ofNullable(userDao.getUser(userId))
+                .map(userTransformer::transform)
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException(String.format("Пользователь с id = %d не найден", userId));
+                });
     }
 
     @Override
