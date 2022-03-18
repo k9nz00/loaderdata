@@ -1,20 +1,14 @@
 package com.github.k9nz00.loaderdata.rest.controller;
 
-import com.github.k9nz00.loaderdata.dao.entity.UserEntity;
 import com.github.k9nz00.loaderdata.rest.dto.*;
 import com.github.k9nz00.loaderdata.service.AdminUserService;
-import com.github.k9nz00.loaderdata.transformer.Transformer;
 import com.github.k9nz00.loaderdata.util.UITransformers;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.datatransfer.Transferable;
 import java.util.Collection;
 
 import static com.github.k9nz00.loaderdata.security.Authorities.MANAGE_USERS;

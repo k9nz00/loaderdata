@@ -18,6 +18,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -119,7 +120,6 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public UserEntity getUserByLogin(String username) {
-
         Query query = entityManager.createQuery("from UserEntity where name =:name");
         query.setParameter("name", username);
         try {
@@ -136,6 +136,17 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return null;
+        }
+    }
+
+    @Override
+    public Optional<Integer> getUserIdByUserName(String username) {
+        try {
+            return Optional.of(entityManager.createQuery("select u.id from UserEntity u where u.name = :name", Integer.class)
+                    .setParameter("name", username)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
     }
 }
