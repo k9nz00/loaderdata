@@ -56,6 +56,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public <T> T updateUser(int userId, UserUpdateDto dto, Function<UserEntity, T> transformer) {
+        userDao.getUserIdByUserName(dto.getName())
+                .ifPresent(id -> {
+                    if (id != userId) {
+                        throw new IllegalArgumentException(
+                                String.format("User with username = '%s' already exists. Choose a different username",
+                                        dto.getName()));
+                    }
+                });
         UserEntity userEntity = userDao.updateUser(userId, dto);
         return transformer.apply(userEntity);
     }

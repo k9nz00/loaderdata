@@ -7,6 +7,7 @@ import com.github.k9nz00.loaderdata.rest.dto.UserUpdateDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface UserDao {
 
@@ -36,4 +37,6 @@ public interface UserDao {
     UserEntity getUserByLogin(String username);
 
     UserEntity getUser(int userId);
+
+    Optional<Integer> getUserIdByUserName(String username);
 }
