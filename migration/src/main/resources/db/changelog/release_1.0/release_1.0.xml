@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+
+    <changeSet id="20211129_001" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <sqlCheck expectedResult="0">SELECT count(*) FROM information_schema.schemata WHERE schema_name = 'loader'</sqlCheck>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0000.sql"/>
+    </changeSet>
+    <changeSet id="20211129_002" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <sqlCheck  expectedResult="0">SELECT count(*) FROM information_schema.columns where column_name = 'authorities' and data_type = 'ARRAY' and udt_schema = 'loader' and udt_name = '_authority'</sqlCheck>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0001.sql"/>
+    </changeSet>
+    <changeSet id="20211129_003" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <not>
+                <tableExists tableName="roles" schemaName="loader"/>
+                <tableExists tableName="users" schemaName="loader"/>
+            </not>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0002.sql"/>
+    </changeSet>
+
+    <changeSet id="20211214_001" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <not>
+                <indexExists schemaName="loader" tableName="users" columnNames="name" indexName="users_name_uindex"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="users_name_uindex" unique="true" schemaName="loader" tableName="users">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
