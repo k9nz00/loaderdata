@@ -49,5 +49,4 @@ public class LiquibaseService extends SpringLiquibase {
         }
         executorMap.get(context.getCommand()).execute(this, context);
     }
-
 }

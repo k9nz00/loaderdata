@@ -20,21 +20,19 @@
     </changeSet>
     <changeSet id="20211129_003" author="ASemka" dbms="postgresql">
         <preConditions>
-            <sqlCheck expectedResult="0">SELECT count(*) FROM information_schema.tables WHERE table_schema = 'loader' AND table_name = 'roles'</sqlCheck>
-            <sqlCheck expectedResult="0">SELECT count(*) FROM information_schema.tables WHERE table_schema = 'loader' AND table_name = 'users'</sqlCheck>
+            <not>
+                <tableExists tableName="roles" schemaName="loader"/>
+                <tableExists tableName="users" schemaName="loader"/>
+            </not>
         </preConditions>
         <sqlFile path="db/changelog/release_1.0/sql/0002.sql"/>
     </changeSet>
 
     <changeSet id="20211214_001" author="ASemka" dbms="postgresql">
         <preConditions>
-            <sqlCheck expectedResult="0">
-                SELECT count(*)
-                FROM pg_indexes
-                WHERE schemaname = 'loader'
-                  AND tablename = 'users'
-                  AND indexname = 'users_name_uindex';
-            </sqlCheck>
+            <not>
+                <indexExists schemaName="loader" tableName="users" columnNames="name" indexName="users_name_uindex"/>
+            </not>
         </preConditions>
         <createIndex indexName="users_name_uindex" unique="true" schemaName="loader" tableName="users">
             <column name="name"/>
