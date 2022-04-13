@@ -28,7 +28,7 @@ public class AdminUserController {
 
     @Secured(MANAGE_USERS)
     @PostMapping("/users")
-    public CurrentUserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDto userDto) {
+    public CurrentUserDto createUser(@Valid @RequestBody UserCreateDto userDto) {
         return userService.createUser(userDto);
     }
 
