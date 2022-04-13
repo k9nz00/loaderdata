@@ -1,7 +1,8 @@
 package com.github.k9nz00.server.dao.entity;
 
 import com.github.k9nz00.server.dao.type.AuthoritiesType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 )
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 public class UserEntity {
 
     @Id

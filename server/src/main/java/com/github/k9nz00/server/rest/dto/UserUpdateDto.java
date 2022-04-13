@@ -5,13 +5,15 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class UserUpdateDto {
+
+    @NotNull
     private int roleId;
 
     @NotBlank
-    @CheckUserExistsValidator
     private String name;
 
     @Length(min = 5)

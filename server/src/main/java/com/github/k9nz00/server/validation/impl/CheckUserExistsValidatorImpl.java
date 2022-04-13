@@ -18,7 +18,6 @@ public class CheckUserExistsValidatorImpl implements ConstraintValidator<CheckUs
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
-
         boolean userExists = userDao.userExists(username);
         if (userExists) {
             context.disableDefaultConstraintViolation();
