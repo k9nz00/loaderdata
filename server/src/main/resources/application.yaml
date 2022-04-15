@@ -1,6 +1,7 @@
 spring:
   application:
     name: Loader data
+    description: Учебный и тестовый проект по работе с SpringBoot, а также работе с не текстовыми фйлами.
   datasource:
     url: ${LOADER_DB_JDBC_URL:jdbc:postgresql://localhost:5432/loader}?currentSchema=${spring.jpa.properties.hibernate.default_schema}
     hikari:

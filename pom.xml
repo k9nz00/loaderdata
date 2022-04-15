@@ -33,6 +33,8 @@
         <spring-boot-starter-logging.version>2.6.3</spring-boot-starter-logging.version>
         <spring-boot-configuration-processor.version>2.6.3</spring-boot-configuration-processor.version>
         <hsqldb.version>2.6.1</hsqldb.version>
+        <swagger-annotations.version>2.1.13</swagger-annotations.version>
+        <springdoc-openapi-ui.version>1.6.7</springdoc-openapi-ui.version>
     </properties>
 
     <build>
