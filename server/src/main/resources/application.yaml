@@ -23,3 +23,7 @@ config:
 
 server:
   port: 8090
+springdoc:
+  api-docs:
+    enabled: true
+  override-with-generic-response: false
