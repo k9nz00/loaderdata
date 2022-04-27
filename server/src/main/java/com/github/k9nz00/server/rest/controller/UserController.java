@@ -20,12 +20,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public CurrentUserDto login(@ParameterObject @RequestBody UserRequestDto requestDto) {
+    public CurrentUserDto login(@RequestBody UserRequestDto requestDto) {
         return userService.getUserByLogin(requestDto);
     }
 
     @PostMapping("/register")
-    public CurrentUserDto createUser(@Valid @ParameterObject @RequestBody UserCreateDefaultDto userDto) {
+    public CurrentUserDto createUser(@Valid @RequestBody UserCreateDefaultDto userDto) {
         return userService.createUser(userDto);
     }
 }
