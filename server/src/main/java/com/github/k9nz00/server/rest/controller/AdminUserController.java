@@ -3,16 +3,13 @@ package com.github.k9nz00.server.rest.controller;
 import com.github.k9nz00.server.rest.dto.*;
 import com.github.k9nz00.server.service.AdminUserService;
 import com.github.k9nz00.server.util.UITransformers;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +32,7 @@ public class AdminUserController {
 
     @Secured(MANAGE_USERS)
     @GetMapping("/users")
-    @Operation(
-            summary = "Позвляет получить всех пользователей"
-    )
+    @Operation(summary = "Позвляет получить всех пользователей")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
