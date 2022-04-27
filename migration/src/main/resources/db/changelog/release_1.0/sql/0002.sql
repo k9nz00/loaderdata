@@ -24,5 +24,5 @@ CREATE TABLE if not exists  loader.users
 );
 
 -- вставка дефолтных пользователей
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (1, 'admin', public.crypt('admin', public.gen_salt('bf', 8)), true, now());
-INSERT INTO loader.users (role_id, name, password, is_active, created_at) VALUES (2, 'default_user', public.crypt('default_user', public.gen_salt('bf', 8)), true, now());
+INSERT INTO loader.users (role_id, name, password, created_at) VALUES (1, 'admin', public.crypt('admin', public.gen_salt('bf', 8)), now());
+INSERT INTO loader.users (role_id, name, password, created_at) VALUES (2, 'default_user', public.crypt('default_user', public.gen_salt('bf', 8)), now());
