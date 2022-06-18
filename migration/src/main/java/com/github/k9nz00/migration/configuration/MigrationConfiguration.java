@@ -20,7 +20,7 @@ public class MigrationConfiguration {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(properties.getDriverClassName());
         config.setJdbcUrl(properties.getJdbcUrl());
-        config.setUsername(properties.getUsername());
+        config.setUsername(properties.getLogin());
         config.setPassword(properties.getPassword());
         config.setSchema(properties.getDatabase());
         config.setMaximumPoolSize(properties.getMaxPoolSize());

@@ -1,7 +1,7 @@
 driverClassName: ${DB_DRIVER_CLASS_NAME:org.postgresql.Driver}
 jdbcUrl: ${DB_URL:jdbc:postgresql://localhost:5432/loader}
 database: ${DB_NAME:loader}
-username: ${DB_USER:postgres}
+login: ${DB_USER:postgres} # лучше поле именовать не username, а по другому. Иначе подтягивается имя пользователя OS
 password: ${DB_PASS:123}
 poolName: ${DB_POOL_NAME:HikariCPPool}
 maxPoolSize: ${DB_POOL_SIZE:1}

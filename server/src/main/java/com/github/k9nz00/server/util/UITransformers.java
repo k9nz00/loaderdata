@@ -17,6 +17,7 @@ public class UITransformers {
         return new UserDto(
                 input.getId(),
                 input.getRoleId(),
+                input.getAvatarId(),
                 input.getName(),
                 input.getIsActive(),
                 input.getCreatedAt(),

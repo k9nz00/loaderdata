@@ -20,9 +20,10 @@ CREATE TABLE if not exists  loader.users
     is_active boolean DEFAULT TRUE NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp,
-    deleted_at timestamp
+    deleted_at timestamp,
+    avatar_id int
 );
 
 -- вставка дефолтных пользователей
-INSERT INTO loader.users (role_id, name, password, created_at) VALUES (1, 'admin', public.crypt('admin', public.gen_salt('bf', 8)), now());
-INSERT INTO loader.users (role_id, name, password, created_at) VALUES (2, 'default_user', public.crypt('default_user', public.gen_salt('bf', 8)), now());
+INSERT INTO loader.users (role_id, name, password, created_at, avatar_id) VALUES (1, 'admin', public.crypt('admin', public.gen_salt('bf', 8)), now(), 1);
+INSERT INTO loader.users (role_id, name, password, created_at, avatar_id) VALUES (2, 'default_user', public.crypt('default_user', public.gen_salt('bf', 8)), now(), 2);

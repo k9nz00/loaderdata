@@ -26,6 +26,9 @@ public class UserEntity {
     @Column(name = "role_id")
     private Integer roleId;
 
+    @Column(name = "avatar_id")
+    private Integer avatarId;
+
     @Column(name = "name")
     private String name;
 

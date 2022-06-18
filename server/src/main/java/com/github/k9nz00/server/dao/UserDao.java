@@ -26,7 +26,10 @@ public interface UserDao {
     @Transactional
     UserEntity updateUser(int userId, UserUpdateDto updateDto);
 
-    //блокировка пользователя
+    @Transactional
+    void setAvatarId(int userId, int avatarId);
+
+    //блокировка пользователя - нужна реализация
 
     @Transactional
     void deleteUser(int userId);

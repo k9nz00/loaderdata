@@ -14,7 +14,7 @@ public class DatasourceProperties {
     private String jdbcUrl;
     private String database;
     private String password;
-    private String username;
+    private String login;
     private Integer maxPoolSize;
     private String poolName;
 }
