@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+
+    <changeSet id="20211129_001" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <sqlCheck expectedResult="0">SELECT count(*)
+                                         FROM information_schema.schemata
+                                         WHERE schema_name = 'loader'</sqlCheck>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0000.sql"/>
+    </changeSet>
+    <changeSet id="20211129_002" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <sqlCheck expectedResult="0">SELECT count(*)
+                                         FROM information_schema.columns
+                                         where column_name = 'authorities'
+                                           and data_type = 'ARRAY'
+                                           and udt_schema = 'loader'
+                                           and udt_name = '_authority'</sqlCheck>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0001.sql"/>
+    </changeSet>
+    <changeSet id="20211129_003" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <not>
+                <tableExists tableName="roles" schemaName="loader"/>
+                <tableExists tableName="users" schemaName="loader"/>
+            </not>
+        </preConditions>
+        <sqlFile path="db/changelog/release_1.0/sql/0002.sql"/>
+    </changeSet>
+
+    <changeSet id="20211214_001" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <not>
+                <indexExists schemaName="loader" tableName="users" columnNames="name" indexName="users_name_uindex"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="users_name_uindex" unique="true" schemaName="loader" tableName="users">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="20220517_001" author="ASemka" dbms="postgresql">
+        <preConditions>
+            <not>
+                <tableExists schemaName="loader" tableName="avatars"/>
+            </not>
+        </preConditions>
+
+        <!-- последовательность стартует с значения "3", чтобы не было ошибки после установки дефолтных аватарок для предустановленых пользователей -->
+        <createSequence
+                schemaName="loader"
+                sequenceName="avatars_id_seq"
+                startValue="3"
+                incrementBy="1"
+                cycle="false"/>
+
+        <createTable schemaName="loader" tableName="avatars">
+            <column name="id" type="int" autoIncrement="false" defaultValueComputed="nextval('loader.avatars_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int"/>
+            <column name="filename" type="varchar"/>
+            <column name="avatar_data" type="text"/>
+            <column name="size" type="bigint"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <insert tableName="avatars" schemaName="loader">
+            <column name="id" type="int" value="1"/>
+            <column name="user_id" type="int" value="1"/>
+            <column name="filename" type="varchar" value="default_avatar"/>
+            <column name="avatar_data" type="text"
+                    value="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zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHukG/2iWMue1zxAw7JHutEvirXsec0DNCx7pBv9oljLntc8QMOyR7rRL4q17HnNAzQse6Qb/aJYy57XPEDDske60S+Ktex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17HnNAzQse2i6iLXsoeki1rLnNQ/QsOyh6SLWsoemi1jLntc8QMOyh6aLWMsemi5iLXte8wANyx6aLmIte2i6iLXsec0DNCx7aLqIteyh6SLWsuc1D9Cw7KHpItayh6aLWMue1zxAw7KHpotYyx6aLmIte17zAA3LHpouYi17aLqItex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17HnNAzQse2i6iLXsoeki1rLnNQ/QsOyh6SLWsoemi1jLntc8QMOyh6aLWMsemi5iLXte8wANyx6aLmIte2i6iLXsec0DNCx7aLqIteyh6SLWsuc1D9Cw7KHpItayh6aLWMue1zxAw7KHpotYyx6aLmIte17zAA3LHpouYi17aLqItex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17HnNAzQse2i6iLXsoeki1rLnNQ/QsOyh6SLWsoemi1jLntc8QMOyh6aLWMsemi5iLXte8wANyx6aLmIte2i6iLXsec0DNCx7aLqIteyh6SLWsuc1D9Cw7KHpItayh6aLWMue1zxAw7KHpotYyx6aLmIte17zAA3LHpouYi17aLqItex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17HnNAzQse2i6iLXsoeki1rLnNQ/QsOyh6SLWsoemi1jLntc8QMOyh6aLWMsemi5iLXte8wANyx6aLmIte2i6iLXsec0DNCx7aLqIteyh6SLWsuc1D9Cw7KHpItayh6aLWMue1zxAw7KHpotYyx6aLmIte17zAA3LHpouYi17aLqItex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17HnNAzQse2i6iLXsoeki1rLnNQ/QsOyh6SLWsoemi1jLntc8QMOyh6aLWMsemi5iLXte8wANyx6aLmIte2i6iLXsec0DNCx7aLqIteyh6SLWsuc1D9Cw7KHpItayh6aLWMue1zxAw7KHpotYyx6aLmIte17zAA3LHpouYi17aLqItex5zQM0LHtouoi17KHpItay5zUP0LDsoeki1rKHpotYy57XPEDDsoemi1jLHpouYi17XvMADcsemi5iLXtouoi17Hntnx8gfaufFGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEALdefNGvZo108QMv1J81a9mgXD9By/Umzlj3axQO0XH/SrGWPdvEASfqMB0jSZzxAkj7jAZL0GQ+QpM94gCR9xgMk6TMeIEmf8QBJ+owHSNJnPECSPuMBkvQZD5Ckz3iAJH3GAyTpMx4gSZ/xAEn6jAdI0mc8QJI+4wGS9BkPkKTPeIAkfcYDJOkzHiBJn/EASfqMB0jSZzxAkj7jAZL0GQ+QpM94gCR9xgMk6TMeIEmf+QtYPtQWx8SA5AAAAABJRU5ErkJggg=="/>
+            <column name="size" type="int" value="5840"/>
+            <column name="created_at" type="timestamp" value="now()"/>
+        </insert>
+
+        <insert tableName="avatars" schemaName="loader">
+            <column name="id" type="int" value="2"/>
+            <column name="user_id" type="int" value="2"/>
+            <column name="filename" type="varchar" value="default_avatar"/>
+            <column name="avatar_data" type="text"
+                    value="iVBORw0KGgoAAAANSUhEUgAAAYAAAAGACAIAAAArpSLoAAAMQElEQVR4Xu3UMQpYORAD0OT+B03avUF6DcvH4MSMeA9V7gQe/fgP4JEf+QDwrxgg4BkDBDxjgIBnDBDwjAECnjFAwDMGCHjGAAHPGCDgGQMEPGOAgGcMEPCMAQKeMUDAMwYIeMYAAc8YIOAZAwQ8Y4CAZwwQ8IwBAp4xQMAzBgh4xgABzxgg4BkDBDxjgIBnDBDwjAECnjFAwDMGqNyv3z9XJ/vQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ70r2oYsBKjdPeleyD10MULl50ruSfehigMrNk96V7EMXA1RunvSuZB+6GKBy86R3JfvQxQCVmye9K9mHLgao3DzpXck+dDFA5eZJ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"/>
+            <column name="size" type="int" value="4260"/>
+            <column name="created_at" type="timestamp" value="now()"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
