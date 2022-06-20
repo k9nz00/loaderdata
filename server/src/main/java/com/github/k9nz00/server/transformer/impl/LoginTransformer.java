@@ -30,6 +30,7 @@ public class LoginTransformer implements Transformer<LoggedUserTransformerDto, C
         currentUserDto.setName(userEntity.getName());
         currentUserDto.setCreatedAt(userEntity.getCreatedAt());
         currentUserDto.setIsActive(userEntity.getIsActive());
+        currentUserDto.setAvatarId(userEntity.getAvatarId());
 
         if (userEntity.getUpdatedAt() != null) {
             currentUserDto.setUpdatedAt(userEntity.getUpdatedAt());

@@ -11,11 +11,21 @@ spring:
       password: ${LOADER_DB_PWD:123}
       connectionTimeout: ${LOADER_DB_TIMEOUT:30000}
       maximum-pool-size: ${LOADER_DB_POOL_SIZE:5}
+
   jpa:
     properties:
       hibernate:
         default_schema: loader
         show_sql: true
+#        TODO исправить entity, чтобы проверка работала
+#    hibernate:
+#      ddl-auto: validate
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 10MB
 
 config:
   pagination:

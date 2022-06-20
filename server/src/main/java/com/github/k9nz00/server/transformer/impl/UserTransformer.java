@@ -12,10 +12,10 @@ public class UserTransformer implements Transformer<UserEntity, UserDto> {
 
     @Override
     public UserDto transform(UserEntity input) {
-
         return new UserDto(
                 input.getId(),
                 input.getRoleId(),
+                input.getAvatarId(),
                 input.getName(),
                 input.getIsActive(),
                 input.getCreatedAt(),

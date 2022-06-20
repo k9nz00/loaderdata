@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class UserDto {
     private int id;
     private int roleId;
+    private int avatarId;
     private String name;
     private Boolean isActive;
     private LocalDateTime createdAt;
